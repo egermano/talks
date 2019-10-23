@@ -96,7 +96,7 @@ Podemos ter também sensores virtuais. Api e dados que podem servir como sensore
 - um GPS converte em dados a sua latitude, longitude e altitude
 - um botão envia um sinal digital quando precionado
 - uma camera converte luz em imagens digitais
-Storage e Branco de Dados
+
 ---
 
 ---
