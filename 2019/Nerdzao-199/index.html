@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+
+    <title>Desenvolva e crie coisas que importam - Bruno Germano Outubro/2019</title>
+
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/reveal.css" />
+	<link rel="stylesheet" href="css/theme/black2.css" />
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css" />
+
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.type = "text/css";
+      link.href = window.location.search.match(/print-pdf/gi)
+        ? "css/print/pdf.css"
+        : "css/print/paper.css";
+      document.getElementsByTagName("head")[0].appendChild(link);
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1><span class="highlight">Amazon DynamoDB</span>, <br>um banco pronto para escalar</h1>
+          <p>
+            Bruno Germano - Dezembro/2019
+          </p>
+        </section>
+        <section>
+			<h2>Bruno <span class="highlight">GERMANO</span></h2>
+			<div style="float: left;">
+				<p>
+					<ul>
+						<li>Engenheiro de software</li>
+						<li>Criador de Conteúdo</li>
+						<li>Maker</li>
+					</ul>
+				</p>
+			</div>
+			<div style="float: right;">
+				<img width=250 height=250 src="https://images.builderservices.io/s/cdn/v1.0/i/m?url=https%3A%2F%2Fstorage.googleapis.com%2Fproduction-hostgator_brasil-v1-0-2%2F372%2F122372%2FpoaibWx6%2F5f248782347f4febb81f9d68a1125bc2&methods=resize%2C1000%2C5000" alt="O Bruno Germano">
+				<p class="no-margin">
+						<small><a href="https://isntagram.com/egermano">@egermano</a></small>
+				</p>
+			</div>
+		</section>
+		<section>
+			<h1>FALAR DE TECNOLOGIA<br> É A MINHA<br> <span class="highlight">PAIXÃO</span></h1>
+		</section>
+		<section>
+			<code class="hljs html">
+					&lt;<span class="highlight">html</span>&gt;<br> 
+					&nbsp;	&lt;<span class="highlight">head</span>&gt;<br> 
+					&nbsp;&nbsp;		&lt;<span class="highlight">title</span>&gt;T&iacute;tulo do site&lt;<span class="highlight">/title</span>&gt; <br>
+					&nbsp;	&lt;<span class="highlight">/head</span>&gt; <br>
+					&nbsp;	&lt;<span class="highlight">body</span>&gt; <br>
+					&nbsp;&nbsp;		&lt;<span class="highlight">h1</span>&gt;Ol&aacute;, Mundo!&lt;<span class="highlight">/h1</span>&gt; <br>
+					&nbsp;	&lt;<span class="highlight">/body</span>&gt; <br>
+					&lt;<span class="highlight">/html</span>&gt;
+			</code>
+		</section>
+		<section>
+			<code class="hljs html">
+					&lt;<span class="highlight">quando</span>&gt;H&aacute; 20 anos&lt;<span class="highlight">/quando</span>&gt; 
+					&lt;<span class="highlight">aprendi</span>&gt;Pensar&lt;<span class="highlight">/aprendi</span>&gt; 
+					&lt;<span class="highlight">aprendi</span>&gt;Explicar&lt;<span class="highlight">/aprendi</span>&gt; 
+					&lt;<span class="highlight">aprendi</span>&gt;Conectar&lt;<span class="highlight">/aprendi</span>&gt;
+			</code>
+		</section>
+		<section>
+			<h1>O que é o <span class="highlight">DynamoDB</span>?</h1>
+		</section>
+		<section>
+			<p>Amazon DynamoDB é um banco de dados não relacional (NoSQL), de <span class="highlight">chave e valor</span> baseado em <span class="highlight">documentos</span> que tem performance de <span class="highlight">um dígito de milisegundos em qualquer escala</span>.</p>
+		</section>
+		<section>
+			<p>Ele é um banco de dados durável, <span class="highlight">multiregião</span>, 100% gerenciável, <span class="highlight">com segurança, backup e restauração integrados</span>, e <span class="highlight">cache em memória</span> para aplicações de internet escaláveis. Ele pode processar até <span class="highlight">20 milhões de requests por segundo</span>.</p>
+		</section>
+		<section>
+			<h2>Quem <span class="highlight">usa</span>?</h2>
+			<p>
+				<ul>
+					<li>Airbnb</li>
+					<li>Lyft</li>
+					<li>Samsung</li>
+					<li>Toyota</li>
+					<li>DAZN</li>
+				</ul>
+			</p>
+		</section>
+		<section>
+			<h1>Como funciona o <span class="highlight">DynamoDB</span>?</h1>
+		</section>
+		<section>
+			<h2><span class="highlight">Documentos</span> não relacionais</h2>
+			<p>
+				Documentos os invés de registros. Você não precisa definir a estrutura completa do seu documento e essa estrutura é mutável.
+			</p>
+		</section>
+		<section>
+			<h2><span class="highlight">Documentos</span> não relacionais</h2>
+			<pre><code  class="hljs" data-trim data-noescape data-line-numbers>
+				{
+				  "uid": "asffe87912-ginjdt3045-9uknksdf",
+				  "email": "germano@email.com.br",
+				  "displayName": "Bruno Germano",
+				  "photoURL": "https://example.com/pic.jpg",
+				  "city": "São Paulo",
+				  "createdAt": "2019-12-06T18:30:33.484Z"
+				}</code></pre>
+		</section>
+		<section>
+			<h2>Chave/<span class="hihglight">Valor</span></h2>
+			<p>
+				O DynamoDB oferece suporte a operações <span class="highlight">GET/PUT</span> usando uma chave primária definida na <span class="highlight">criação da tabela</span>. Esse é o único dado que você precisa definir. Dessa maneira cada documento representa a combinação da chave primária valor completo do documento inserido.
+			</p>
+		</section>
+		<section>
+			<h2>Chave/<span class="hihglight">Valor</span></h2>
+			<p>O documento fica assim, sendo <span class="highlight">uid</span> a chave primária.</p>
+			<pre><code  class="hljs" data-trim data-noescape data-line-numbers>
+					{
+					  <mark>"uid": "asffe87912-ginjdt3045-9uknksdf",</mark>
+					  "email": "germano@email.com.br",
+					  "displayName": "Bruno Germano",
+					  "photoURL": "https://example.com/pic.jpg",
+					  "city": "São Paulo",
+					  "createdAt": "2019-12-06T18:30:33.484Z"
+					}</code></pre>
+		</section>
+		<section>
+			<h2>Chave/<span class="hihglight">Valor</span></h2>
+			<p>Exemplo de declaração de tablea, declaramos apenas as chaves e os índices.</p>
+			<pre><code  class="hljs" data-trim data-noescape data-line-numbers>
+				export const usersTable = {
+					TableName: `users-table`,
+					KeySchema: [
+						{ AttributeName: 'uid', KeyType: 'HASH' },
+					],
+					AttributeDefinitions: [
+						{ AttributeName: 'uid', AttributeType: 'S' },
+					],
+				};</code></pre>
+		</section>
+		<section>
+			<h2>PUT de dados na tabela</h2>
+			<p><span class="highlight">Atenção:</span> A chave primária de uma tabela é única, toda vez que você salvar um documento na tabela <span class="highlight">ele vai criar quando não existir</span> aquela chave e vai <span class="highlight">atualizar quando já existir</span>. O DynamoDb não avisa e nem falha se você tentar inserir um documento com a mesma chave, <span class="highlight">ele simplesmente atualiza</span> o existente.</p>
+		</section>
+		<section>
+			<h2>GET de dados na tabela</h2>
+			<p>Existem 2 maneiras de ler dados de uma tabela, usando uma <span class="highlight">Chave</span> ou um <span class="highlight">Índice</span>, e <span class="highlight">scaneando</span> a tabela toda.</p>
+			<p>Buscas com chaves ou índices são <span class="highlight">mais rápidas</span> do que scanear a tabela toda.</p>
+		</section>
+		<section>
+			<h2><span class="highlight">Índice</span>: Global Secondary Indexes</span></h2>
+			<pre><code  class="hljs" data-trim data-noescape data-line-numbers>
+					export const usersTable = {
+						TableName: `users-table`,
+						...
+						<mark>GlobalSecondaryIndexes: [{</mark>
+							IndexName: 'id_uid_index',
+							KeySchema: [
+								{ AttributeName: 'email', KeyType: 'HASH' },
+							],
+							Projection: {
+								ProjectionType: 'ALL',
+							},
+						}]
+					};</code></pre>
+		</section>
+		<section>
+				<h2><span class="highlight">Índice</span>: Local Secondary Indexes</span></h2>
+				<p>Ordenando pela data de criação</p>
+				<pre><code  class="hljs" data-trim data-noescape data-line-numbers>
+					export const usersTable = {
+						TableName: `users-table`,
+						...
+						<mark>LocalSecondaryIndexes: [{</mark>
+							IndexName: 'uidCreatedAtIndex',
+							KeySchema: [
+								{ AttributeName: 'uid', KeyType: 'HASH' },
+								{ AttributeName: 'createdAt', KeyType: 'RANGE' },
+							],
+							Projection: {
+								ProjectionType: 'ALL',
+							},
+						}]
+					};</code></pre>
+		</section>
+		<section>
+			<h1><span class="highlight">Global</span> Tables</h1>
+			<p>Funcionalidade que permite você replicar dados regionais em tabelas locais e persistir esses dados globalmente.</p>
+		</section>
+		<section>
+			<h2><span class="highlight">Global</span> Tables</h2>
+			<p style="text-align:center;">
+					<img src="../img/users-table.png" alt="90's Fashion" class="stretch">
+			</p>
+		</section>
+		<section>
+			<h2><span class="highlight">Global</span> Tables</h2>
+			<p>
+				Benefícios e peculiaridades.
+				<ul>
+					<li>replicação automática</li>
+					<li>alta disponibilidade</li>
+					<li>eventual consistência</li>
+				</ul>
+			</p>
+		</section>
+		<section>
+			<h2><span class="highlight">Global</span> Tables</h2>
+			<p>Eventual consistênciaquer dizer, que um documento pode ter um <span class="highlight">inconsistência durante a replicação</span> que pode durar poucos segundos.</p>
+			<p>
+				<ul>
+					<li>aws:rep:deleting</li>
+					<li>aws:rep:updatetime</li>
+					<li>aws:rep:updateregion</li>
+				</ul>
+			</p>
+			<p>
+				<small>Atributes adicionados aos documentos de tabelas globais.</small>
+			</p>
+		</section>
+		<section>
+			<h1>Desnormalizar é o novo <span class="highlight">normal</span></h1>
+		</section>
+		<section>
+			<h2><span class="highlight">Normalizar</span></h2>
+			<p>
+				É a reorganização de dados para cumprir 2 requisitos:
+				<ul>
+					<li>Remover redundância de dados</li>
+					<li>Assegurar dependência de dados</li>
+				</ul>
+			</p>
+		</section>
+		<section>
+			<h2><span class="highlight">Desnormalizar</span></h2>
+			<p>
+				É a reorganização de dados pensando em funcionalidade do sistema para minimizar latência e consumo de infra-estrutura.
+			</p>
+		</section>
+		<section>
+			<pre><code  class="hljs" data-trim data-noescape data-line-numbers>
+				export const fiscalDocsTable = {
+					TableName: `fiscal-docs-table`,
+					KeySchema: [
+						{ AttributeName: 'docId', KeyType: 'HASH' },
+						{ AttributeName: 'uid', KeyType: 'RANGE' },
+					],
+					AttributeDefinitions: [
+						{ AttributeName: 'docId', AttributeType: 'S' },
+						{ AttributeName: 'uid', AttributeType: 'S' },
+					],
+				};</code></pre>
+		</section>
+		<section>
+			<pre><code  class="hljs" data-trim data-noescape data-line-numbers>
+				{
+					"docId":"nf-123",
+					"uid": "nf-123",
+					"description": "descrição da NF",
+					"date": "2019-06-12",
+					"total": 1500,
+				}</code></pre>
+		</section>
+		<section>
+			<pre><code  class="hljs" data-trim data-noescape data-line-numbers>
+				{
+					"docId":"bl-123",
+					"uid": "bl-123",
+					"description": "descrição do Boleto",
+					"dueDate": "2019-06-12",
+					"total": 1500,
+				}</code></pre>
+		</section>
+		<section>
+			<pre><code  class="hljs" data-trim data-noescape data-line-numbers>
+				{
+					"docId":"nf-123",
+					"uid": "bl-123",
+					"paymentDate": "2019-06-12",
+					"paymentAccount": "Conta do Banco 1"
+				}</code></pre>
+		</section>
+		<section>
+			<table>
+				<thead>
+					<tr>
+						<td>PK (hash)</td>
+						<td>PK (range)</td>
+						<td>Atributos</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td rowspan="2">nf-123</td>
+						<td>nf-123</td>
+						<td>{... description, date, total}</td>
+					</tr>
+					<tr>
+						<td>bl-123</td>
+						<td>{... paymentDate, paymentAccount}</td>
+					</tr>
+					<tr>
+						<td>bl-123</td>
+						<td>bl-123</td>
+						<td>{... description, dueDate, total}</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+		<section>
+			<h1><span class="highlight">Prós</span> e Contras</h1>
+		</section>
+		<section>
+			<div class="">
+				<div class="" style="width: 49%; float: left;">
+					<h3><span class="highlight">Prós</span></h3>
+					<ul>
+						<li>Velocidade e disponibilidades</li>
+						<li>Escala automática</li>
+						<li>Sem gerencimaneot de servidor</li>
+						<li>Replica, backup e restauração</li>
+						<li>Documentos flexíveis</li>
+					</ul>
+				</div>
+				<div class="" style="width: 49%; float: right;">
+					<h3>Contras</h3>
+					<ul>
+						<li>Exclusivo AWS</li>
+						<li>Queries complexas</li>
+						<li>Atualizações indesejadas</li>
+						<li>Cálculo de custo</li>
+						<li>+ Responsabilidade para programadores</li>
+					</ul>
+				</div>
+			</div>
+			<div style="float:none;"></div>
+		</section>
+		<section>
+			<h1>Conclusão</h1>
+			<p>DynamoDB é um banco de dado <span class="highlight">super poderoso</span>, de implementação e escala fácil porém requer que a equipe de desenvolvimento tenha <span class="highlight">mais cuidados com os dados</span>. 
+				Em geral <span class="highlight">não é a solução perfeita</span> para todos os projetos, mas é um ótimo serviço para quem precisa de <span class="highlight">escala e alta disponibilidade</span> sem precisar de muito gerenciamento.</p>
+		</section>
+		<section>
+			<h2>Bruno <span class="highlight">Germano</span></h2>
+			<div style="float: left;">
+				<p>Youtube: <a href="https://youtube.com/egermano">O Bruno Germano</a></p>
+				<p>Twitter: <a href="https://twitter.com/egermano">@egermano</a></p>
+				<p>Instagram: <a href="https://instagram.com/egermano">@egermano</a></p>
+				<p>Github: <a href="https://github.com/egermano">@egermano</a></p>
+			</div>
+			<div style="float: right;">
+				<img width=250 height=250 src="https://images.builderservices.io/s/cdn/v1.0/i/m?url=https%3A%2F%2Fstorage.googleapis.com%2Fproduction-hostgator_brasil-v1-0-2%2F372%2F122372%2FpoaibWx6%2F5f248782347f4febb81f9d68a1125bc2&methods=resize%2C1000%2C5000" alt="O Bruno Germano">
+			</div>
+		</section>
+      </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+		highlight: true,
+        dependencies: [
+        //   { src: "plugin/markdown/marked.js" },
+        //   { src: "plugin/markdown/markdown.js" },
+        //   { src: "plugin/notes/notes.js", async: true },
+          { src: "plugin/highlight/highlight.js", async: true }
+        ]
+      });
+    </script>
+  </body>
+</html>
